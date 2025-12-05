@@ -22,7 +22,7 @@ const ThoughtsList = styled.section`
 `;
 
 export const App = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]); //Here si a state called messages using useState.
 
   const addMessage = (text) => {
     const newMessage = {
@@ -32,10 +32,12 @@ export const App = () => {
       createdAt: new Date(),
     };
 
-    // newest first
+    // When someone submits a new message, I add it to the top of this list, newest first
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
   };
 
+    // Here is the function called likeMessage which adds hearts when the user clicks a button.
+    //I use .map() to find the right message and update the hearts count
   const likeMessage = (id) => {
     setMessages((prevMessages) =>
       prevMessages.map((item) =>

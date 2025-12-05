@@ -56,14 +56,11 @@ const TimeAgo = styled.span`
 `;
 
 const getTimeAgo = (date) => {
-  const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+  const diff = Date.now() - new Date(date).getTime();
+  const minutes = Math.floor(diff / 60000);
 
-  if (seconds < 60) return `${seconds} seconds ago`;
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes} minutes ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} hours ago`;
-  return "a long time ago";
+  if (minutes === 0) return "just now";
+  return minutes + " min ago";
 };
 
 export const ThoughtCard = ({ entry, onLikeMessage }) => {
