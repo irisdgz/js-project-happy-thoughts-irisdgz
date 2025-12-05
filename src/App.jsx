@@ -1,50 +1,66 @@
 // src/App.jsx
 import React, { useState } from "react";
-import { Header } from "./components/Header";
-import { ThoughtForm } from "./components/ThoughtForm";
-import { ThoughtItem } from "./components/ThoughtItem";
+import styled from "styled-components";
+import { PageHeader } from "./components/PageHeader";
+import { ThoughtInput } from "./components/ThoughtInput";
+import { ThoughtCard } from "./components/ThoughtCard";
+
+const Page = styled.div`
+  min-height: 100vh;
+  padding: 24px 16px 40px;
+`;
+
+const Main = styled.main`
+  max-width: 640px;
+  margin: 0 auto;
+`;
+
+const ThoughtsList = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
 
 export const App = () => {
-  const [thoughts, setThoughts] = useState([]);
+  const [messages, setMessages] = useState([]);
 
-  const addThought = (message) => {
-    const newThought = {
+  const addMessage = (text) => {
+    const newMessage = {
       id: Date.now(),
-      message,
+      message: text,
       hearts: 0,
       createdAt: new Date(),
     };
 
-    setThoughts((prev) => [newThought, ...prev]);
+    // newest first
+    setMessages((prevMessages) => [newMessage, ...prevMessages]);
   };
 
-  const handleLike = (id) => {
-    setThoughts((prev) =>
-      prev.map((thought) =>
-        thought.id === id
-          ? { ...thought, hearts: thought.hearts + 1 }
-          : thought
+  const likeMessage = (id) => {
+    setMessages((prevMessages) =>
+      prevMessages.map((item) =>
+        item.id === id ? { ...item, hearts: item.hearts + 1 } : item
       )
     );
   };
 
   return (
-    <div className="page">
-      <Header />
+    <Page>
+      <PageHeader />
 
-      <main className="main-container">
-        <ThoughtForm onAddThought={addThought} />
+      <Main>
+        <ThoughtInput onAddMessage={addMessage} />
 
-        <section className="thoughts-list">
-          {thoughts.map((thought) => (
-            <ThoughtItem
-              key={thought.id}
-              thought={thought}
-              onLike={handleLike}
+        <ThoughtsList>
+          {messages.map((entry) => (
+            <ThoughtCard
+              key={entry.id}
+              entry={entry}
+              onLikeMessage={likeMessage}
             />
           ))}
-        </section>
-      </main>
-    </div>
+        </ThoughtsList>
+      </Main>
+    </Page>
   );
 };
