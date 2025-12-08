@@ -12,7 +12,7 @@ const FormCard = styled.section`
 `;
 
 const Title = styled.h3`
-  font-family: "Courier New", monospace;
+  font-family: "Monteserrat", monospace;
   font-size: 18px;
   margin: 0 0 12px;
 `;
@@ -28,7 +28,7 @@ const TextArea = styled.textarea`
   min-height: 80px;
   padding: 8px;
   border: 2px solid #000;
-  font-family: "Courier New", monospace;
+  font-family: "Monteserrat", monospace;
   font-size: 14px;
   resize: vertical;
 `;
@@ -36,7 +36,7 @@ const TextArea = styled.textarea`
 const ErrorText = styled.p`
   color: #e11d48;
   font-size: 12px;
-  font-family: "Courier New", monospace;
+  font-family: "Monteserrat", monospace;
   margin: 0;
 `;
 
