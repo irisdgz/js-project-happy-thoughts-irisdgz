@@ -58,21 +58,21 @@ const SubmitButton = styled.button`
     background: #ff9999;
   }
 `;
-
+    //This is the controlled form, which means React always knows what the user is typing.
 export const ThoughtInput = ({ onAddMessage }) => {
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState("");  // Here stores the new message input by the user
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault();  //Stops the page from refreshing.
 
     if (newMessage.trim().length < 5) {
-      setErrorMessage("Your message is too short 😔");
+      setErrorMessage("Your message is too short");
       return;
     }
 
-    onAddMessage(newMessage.trim());
-    setNewMessage("");
+    onAddMessage(newMessage.trim());  //This means run addMessage () in App.jsx with the new message 
+    setNewMessage(""); // Clear the textarea after submission
     setErrorMessage("");
   };
 
@@ -81,10 +81,10 @@ export const ThoughtInput = ({ onAddMessage }) => {
       <Title>What's making you happy right now?</Title>
 
       <Form onSubmit={handleSubmit}>
-        <TextArea
+        <TextArea  //textarea is controlled by React. React always knows the current text typed
           rows="3"
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={(e) => setNewMessage(e.target.value)}  //typing updates React state (the variable newMessage).
           placeholder="Write a happy thought..."
         />
 

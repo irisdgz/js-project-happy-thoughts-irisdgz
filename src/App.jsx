@@ -54,7 +54,8 @@ export const App = () => {
         <ThoughtInput onAddMessage={addMessage} />
 
         <ThoughtsList>
-          {messages.map((entry) => (
+          {messages.map((entry) => (  //As soon as the state messages gets a new message: map() runs again
+                                      // It now has an extra item, renders an extra <ThoughtCard />
             <ThoughtCard
               key={entry.id}
               entry={entry}
