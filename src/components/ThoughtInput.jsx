@@ -30,7 +30,7 @@ const TextArea = styled.textarea`
   border: 2px solid #000;
   font-family: "Monteserrat", monospace;
   font-size: 14px;
-  resize: vertical;
+  resize: none; 
 `;
 
 const ErrorText = styled.p`

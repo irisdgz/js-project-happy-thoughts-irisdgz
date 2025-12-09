@@ -9,7 +9,7 @@ const HeaderWrapper = styled.header`
 
 const Title = styled.h1`
   font-family: "Monteserrat", monospace;
-  font-size: 32px; 
+  font-size: 40px; 
   font-weight: 700;
   margin: 0 0 8px;
 `;
