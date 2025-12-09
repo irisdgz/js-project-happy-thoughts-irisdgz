@@ -9,3 +9,12 @@ Your code should follow the guidelines on how to write clean code
 During this week and project I learned to understand the basics of React.
 I practiced how to use the useState hook, managing state for: the input field, the list of thoughts,updating likes.
 
+The app includes:
+
+a header
+
+a form for writing a message
+
+a list of message cards
+
+a like button with a live heart counter
