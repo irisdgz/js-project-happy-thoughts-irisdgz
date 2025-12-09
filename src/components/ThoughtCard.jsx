@@ -12,7 +12,7 @@ const Card = styled.article`
 `;
 
 const Message = styled.p`
-  font-family: "Monteserrat", monospace;
+  font-family: "Montserrat", monospace;
   font-size: 16px;
   margin: 0 0 16px;
   white-space: pre-wrap;
@@ -44,13 +44,13 @@ const LikeButton = styled.button`
 `;
 
 const LikeCount = styled.span`
-  font-family: "Monteserrat", monospace;
+  font-family: "Montserrat", monospace;
   font-size: 14px;
   color: #555;
 `;
 
 const TimeAgo = styled.span`
-  font-family: "Monteserrat", monospace;
+  font-family: "Montserrat", monospace;
   font-size: 12px;
   color: #999;
 `;

@@ -8,14 +8,14 @@ const HeaderWrapper = styled.header`
 `;
 
 const Title = styled.h1`
-  font-family: "Monteserrat", monospace;
+  font-family: "Montserrat", monospace;
   font-size: 40px; 
   font-weight: 700;
   margin: 0 0 8px;
 `;
 
 const Subtitle = styled.p`
-  font-family: "Monteserrat", monospace;
+  font-family: "Montserrat", monospace;
   font-size: 14px;
   color: #666;
   margin: 0;

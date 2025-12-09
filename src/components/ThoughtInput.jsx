@@ -12,7 +12,7 @@ const FormCard = styled.section`
 `;
 
 const Title = styled.h3`
-  font-family: "Monteserrat", monospace;
+  font-family: "Montserrat", monospace;
   font-size: 18px;
   margin: 0 0 12px;
 `;
@@ -28,7 +28,7 @@ const TextArea = styled.textarea`
   min-height: 80px;
   padding: 8px;
   border: 2px solid #000;
-  font-family: "Monteserrat", monospace;
+  font-family: "Montserrat", monospace;
   font-size: 14px;
   resize: none; 
 `;
@@ -36,7 +36,7 @@ const TextArea = styled.textarea`
 const ErrorText = styled.p`
   color: #e11d48;
   font-size: 12px;
-  font-family: "Monteserrat", monospace;
+  font-family: "Montserrat", monospace;
   margin: 0;
 `;
 
@@ -50,7 +50,7 @@ const SubmitButton = styled.button`
   padding: 10px 20px;
   border-radius: 999px;
   cursor: pointer;
-  font-family: "Courier New", monospace;
+  font-family: "Montserrat", monospace;
   font-size: 14px;
   font-weight: bold;
 
