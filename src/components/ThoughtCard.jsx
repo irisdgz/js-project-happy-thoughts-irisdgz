@@ -73,7 +73,7 @@ export const ThoughtCard = ({ entry, onLikeMessage }) => {
 
       <FooterRow>
         <LikeGroup>
-          <LikeButton active={active} onClick={() => onLikeMessage(entry.id)}>
+          <LikeButton active={active} onClick={() => onLikeMessage(entry.id)}>  // 
             <Heart
               size={18}
               color={active ? "#ff4b6e" : "#555"}

@@ -1,10 +1,13 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { PageHeader } from "./components/PageHeader";
 import { ThoughtInput } from "./components/ThoughtInput";
 import { ThoughtCard } from "./components/ThoughtCard";
 
+const API_URL = "https://happy-thoughts-api-4ful.onrender.com/thoughts";
+
+// Layout styling
 const Page = styled.div`
   min-height: 100vh;
   padding: 24px 16px 40px;
@@ -22,28 +25,59 @@ const ThoughtsList = styled.section`
 `;
 
 export const App = () => {
-  const [messages, setMessages] = useState([]); //Here si a state called messages using useState.
+  // All thoughts displayed in the app
+  const [thoughts, setThoughts] = useState([]);
 
-  const addMessage = (text) => {
-    const newMessage = {
-      id: Date.now(),
-      message: text,
-      hearts: 0,
-      createdAt: new Date(),
-    };
+  // Load thoughts as soon as the page opens
+  useEffect(() => {
+    fetchThoughts();
+  }, []);
 
-    // When someone submits a new message, I add it to the top of this list, newest first
-    setMessages((prevMessages) => [newMessage, ...prevMessages]);
+  // Get the latest thoughts from the API
+  const fetchThoughts = () => {
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        setThoughts(data);
+      })
+      .catch((error) => {
+        console.log("Could not load thoughts:", error);
+      });
   };
 
-    // Here is the function called likeMessage which adds hearts when the user clicks a button.
-    //I use .map() to find the right message and update the hearts count
-  const likeMessage = (id) => {
-    setMessages((prevMessages) =>
-      prevMessages.map((item) =>
-        item.id === id ? { ...item, hearts: item.hearts + 1 } : item
-      )
-    );
+  // Add a new thought (POST request)
+  const addThought = (text) => {
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    })
+      .then((res) => res.json())
+      .then((newThought) => {
+        // Add the new thought to the top of the list
+        setThoughts((oldList) => [newThought, ...oldList]);
+      })
+      .catch((error) => {
+        console.log("Could not post thought:", error);
+      });
+  };
+
+  // Like a thought
+  const likeThought = (id) => {
+    fetch(`${API_URL}/${id}/like`, {
+      method: "POST",
+    })
+      .then(() => {
+        // Update the liked thought directly in state
+        setThoughts((oldList) =>
+          oldList.map((item) =>
+            item._id === id ? { ...item, hearts: item.hearts + 1 } : item
+          )
+        );
+      })
+      .catch((error) => {
+        console.log("Could not like thought:", error);
+      });
   };
 
   return (
@@ -51,15 +85,14 @@ export const App = () => {
       <PageHeader />
 
       <Main>
-        <ThoughtInput onAddMessage={addMessage} />
+        <ThoughtInput onAddMessage={addThought} />
 
         <ThoughtsList>
-          {messages.map((entry) => (  //As soon as the state messages gets a new message: map() runs again
-                                      // It now has an extra item, renders an extra <ThoughtCard />
+          {thoughts.map((item) => (
             <ThoughtCard
-              key={entry.id}
-              entry={entry}
-              onLikeMessage={likeMessage}
+              key={item._id}
+              entry={item}
+              onLikeMessage={likeThought}
             />
           ))}
         </ThoughtsList>
