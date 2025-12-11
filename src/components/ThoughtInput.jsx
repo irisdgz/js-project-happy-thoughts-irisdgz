@@ -12,7 +12,7 @@ const FormCard = styled.section`
 `;
 
 const Title = styled.h3`
-  font-family: "Montserrat", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 18px;
   margin: 0 0 12px;
 `;
@@ -28,16 +28,16 @@ const TextArea = styled.textarea`
   min-height: 80px;
   padding: 8px;
   border: 2px solid #000;
-  font-family: "Montserrat", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 14px;
-  resize: none; 
+  resize: none;
 `;
 
 const ErrorText = styled.p`
   color: #e11d48;
   font-size: 12px;
-  font-family: "Montserrat", monospace;
   margin: 0;
+  font-family: "Montserrat", sans-serif;
 `;
 
 const SubmitButton = styled.button`
@@ -50,7 +50,7 @@ const SubmitButton = styled.button`
   padding: 10px 20px;
   border-radius: 999px;
   cursor: pointer;
-  font-family: "Montserrat", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: bold;
 
@@ -58,21 +58,31 @@ const SubmitButton = styled.button`
     background: #ff9999;
   }
 `;
-    //This is the controlled form, which means React always knows what the user is typing.
+
 export const ThoughtInput = ({ onAddMessage }) => {
-  const [newMessage, setNewMessage] = useState("");  // Here stores the new message input by the user
+  const [newMessage, setNewMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Runs when the user submits the form
   const handleSubmit = (event) => {
-    event.preventDefault();  //Stops the page from refreshing.
+    event.preventDefault();
 
+    // Simple length checks based on the API rules
     if (newMessage.trim().length < 5) {
-      setErrorMessage("Your message is too short");
+      setErrorMessage("Message is too short.");
       return;
     }
 
-    onAddMessage(newMessage.trim());  //This means run addMessage () in App.jsx with the new message 
-    setNewMessage(""); // Clear the textarea after submission
+    if (newMessage.trim().length > 140) {
+      setErrorMessage("Message is too long.");
+      return;
+    }
+
+    // Send the text back up to App.jsx
+    onAddMessage(newMessage.trim());
+
+    // Reset the form after sending
+    setNewMessage("");
     setErrorMessage("");
   };
 
@@ -81,19 +91,18 @@ export const ThoughtInput = ({ onAddMessage }) => {
       <Title>What's making you happy right now?</Title>
 
       <Form onSubmit={handleSubmit}>
-        <TextArea  //textarea is controlled by React. React always knows the current text typed
-          rows="3"
+        <TextArea
           value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}  //typing updates React state (the variable newMessage).
+          onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Write a happy thought..."
         />
 
         {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 
         <SubmitButton type="submit">
-          <Heart size={18} fill="#ff4b6e" color="#ff4b6e" />
-          <span>Send Happy Thought</span>
-          <Heart size={18} fill="#ff4b6e" color="#ff4b6e" />
+          <Heart size={18} color="#ff4b6e" fill="#ff4b6e" />
+          Send Happy Thought
+          <Heart size={18} color="#ff4b6e" fill="#ff4b6e" />
         </SubmitButton>
       </Form>
     </FormCard>

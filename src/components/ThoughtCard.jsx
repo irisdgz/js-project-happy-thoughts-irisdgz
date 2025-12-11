@@ -12,7 +12,7 @@ const Card = styled.article`
 `;
 
 const Message = styled.p`
-  font-family: "Montserrat", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 16px;
   margin: 0 0 16px;
   white-space: pre-wrap;
@@ -35,8 +35,8 @@ const LikeButton = styled.button`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid ${(props) => (props.active ? "#ff4b6e" : "#ccc")};
-  background-color: ${(props) => (props.active ? "#ffebef" : "#f3f3f3")};
+  border: 1px solid #ccc;
+  background-color: #f3f3f3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,28 +44,28 @@ const LikeButton = styled.button`
 `;
 
 const LikeCount = styled.span`
-  font-family: "Montserrat", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 14px;
   color: #555;
 `;
 
 const TimeAgo = styled.span`
-  font-family: "Montserrat", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 12px;
   color: #999;
 `;
+
 
 const getTimeAgo = (date) => {
   const diff = Date.now() - new Date(date).getTime();
   const minutes = Math.floor(diff / 60000);
 
   if (minutes === 0) return "just now";
-  return minutes + " min ago";
+  return `${minutes} min ago`;
 };
 
 export const ThoughtCard = ({ entry, onLikeMessage }) => {
   const timeAgo = getTimeAgo(entry.createdAt);
-  const active = entry.hearts > 0;
 
   return (
     <Card>
@@ -73,12 +73,8 @@ export const ThoughtCard = ({ entry, onLikeMessage }) => {
 
       <FooterRow>
         <LikeGroup>
-          <LikeButton active={active} onClick={() => onLikeMessage(entry.id)}>  // 
-            <Heart
-              size={18}
-              color={active ? "#ff4b6e" : "#555"}
-              fill={active ? "#ff4b6e" : "none"}
-            />
+          <LikeButton onClick={() => onLikeMessage(entry._id)}>
+            <Heart size={18} color="#ff4b6e" fill="#ff4b6e" />
           </LikeButton>
           <LikeCount>x {entry.hearts}</LikeCount>
         </LikeGroup>
