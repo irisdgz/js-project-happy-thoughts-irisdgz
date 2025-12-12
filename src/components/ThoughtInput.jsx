@@ -64,7 +64,7 @@ export const ThoughtInput = ({ onAddMessage }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Simple length checks based on the API rules
+    // easy length checks based on the API rules 5-140 letters
     if (newMessage.trim().length < 5) {
       setErrorMessage("Message is too short.");
       return;
@@ -78,7 +78,7 @@ export const ThoughtInput = ({ onAddMessage }) => {
     // Send the text back up to App.jsx
     onAddMessage(newMessage.trim());
 
-    // Reset the form after sending
+    // Reset the form after sending the message
     setNewMessage("");
     setErrorMessage("");
   };

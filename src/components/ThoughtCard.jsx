@@ -55,7 +55,7 @@ const TimeAgo = styled.span`
   color: #999;
 `;
 
-// Small helper funciton to show how many min ago"
+// Small helper funciton to show how many min ago
 const getTimeAgo = (date) => {
   const diff = Date.now() - new Date(date).getTime();
   const minutes = Math.floor(diff / 60000);

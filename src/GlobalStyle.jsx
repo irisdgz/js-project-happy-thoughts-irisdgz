@@ -1,9 +1,4 @@
-
-import { createGlobalStyle } from "styled-components";
-
 export const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-
   *,
   *::before,
   *::after {
@@ -17,3 +12,4 @@ export const GlobalStyle = createGlobalStyle`
     color: #000000;
   }
 `;
+

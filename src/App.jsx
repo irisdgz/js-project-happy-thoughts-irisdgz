@@ -45,7 +45,7 @@ export const App = () => {
       });
   };
 
-  // Add a new thought (POST request)
+  // Add a new thought, POST request
   const addThought = (text) => {
     fetch(API_URL, {
       method: "POST",
@@ -54,8 +54,8 @@ export const App = () => {
     })
       .then((res) => res.json())
       .then((newThought) => {
-        // Add the new thought to the top of the list
-        setThoughts((oldList) => [newThought, ...oldList]);
+        // Add the newest thought to the top of the list
+        setThoughts((prevThoughts) => [newThought, ...prevThoughts]);
       })
       .catch((error) => {
         console.log("Could not post thought:", error);
@@ -69,8 +69,8 @@ export const App = () => {
     })
       .then(() => {
         // Update the liked thought directly in state
-        setThoughts((oldList) =>
-          oldList.map((item) =>
+        setThoughts((prevThoughts) =>
+          prevThoughts.map((item) =>
             item._id === id ? { ...item, hearts: item.hearts + 1 } : item
           )
         );
@@ -90,7 +90,7 @@ export const App = () => {
         <ThoughtsList>
           {thoughts.map((item) => (
             <ThoughtCard
-              key={item._id}
+              key={item._id}  // each key is a unique id
               entry={item}
               onLikeMessage={likeThought}
             />
