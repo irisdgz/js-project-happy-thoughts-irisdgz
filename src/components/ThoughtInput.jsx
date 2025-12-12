@@ -31,6 +31,7 @@ const TextArea = styled.textarea`
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   resize: none;
+  box-sizing: border-box;
 `;
 
 const ErrorText = styled.p`

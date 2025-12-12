@@ -1,4 +1,3 @@
-// src/components/ThoughtCard.jsx
 import React from "react";
 import styled from "styled-components";
 import { Heart } from "lucide-react";
@@ -16,8 +15,9 @@ const Message = styled.p`
   font-size: 16px;
   margin: 0 0 16px;
   white-space: pre-wrap;
-  word-break: break-word;
+  word-break: break-word;  
 `;
+//If a word is super long and doesn’t fit, break it so it fits.
 
 const FooterRow = styled.div`
   display: flex;
