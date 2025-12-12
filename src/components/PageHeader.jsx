@@ -25,7 +25,7 @@ export const PageHeader = () => {
   return (
     <HeaderWrapper>
       <Title>Project Happy Thoughts</Title>
-      <Subtitle>Share a happy thought!</Subtitle>
+      <Subtitle>Share somthing that makes you happy!</Subtitle>
     </HeaderWrapper>
   );
 };

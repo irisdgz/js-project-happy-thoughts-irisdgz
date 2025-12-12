@@ -1,4 +1,4 @@
-// src/GlobalStyle.jsx
+
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`

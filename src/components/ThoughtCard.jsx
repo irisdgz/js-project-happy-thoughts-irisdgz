@@ -46,7 +46,7 @@ const LikeButton = styled.button`
 const LikeCount = styled.span`
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
-  color: #555;
+  color: #464545ff;
 `;
 
 const TimeAgo = styled.span`
@@ -55,7 +55,7 @@ const TimeAgo = styled.span`
   color: #999;
 `;
 
-
+// Small helper funciton to show how many min ago"
 const getTimeAgo = (date) => {
   const diff = Date.now() - new Date(date).getTime();
   const minutes = Math.floor(diff / 60000);
@@ -74,7 +74,7 @@ export const ThoughtCard = ({ entry, onLikeMessage }) => {
       <FooterRow>
         <LikeGroup>
           <LikeButton onClick={() => onLikeMessage(entry._id)}>
-            <Heart size={18} color="#ff4b6e" fill="#ff4b6e" />
+            <Heart size={18} color="#c81438ff" fill="#c81438ff" />
           </LikeButton>
           <LikeCount>x {entry.hearts}</LikeCount>
         </LikeGroup>

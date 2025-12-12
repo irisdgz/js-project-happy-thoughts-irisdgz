@@ -34,7 +34,7 @@ const TextArea = styled.textarea`
 `;
 
 const ErrorText = styled.p`
-  color: #e11d48;
+  color: #9e0b2bff;
   font-size: 12px;
   margin: 0;
   font-family: "Montserrat", sans-serif;
@@ -53,10 +53,7 @@ const SubmitButton = styled.button`
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: bold;
-
-  &:hover {
-    background: #ff9999;
-  }
+  
 `;
 
 export const ThoughtInput = ({ onAddMessage }) => {
@@ -100,11 +97,13 @@ export const ThoughtInput = ({ onAddMessage }) => {
         {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 
         <SubmitButton type="submit">
-          <Heart size={18} color="#ff4b6e" fill="#ff4b6e" />
+          <Heart size={18} color="#c81438ff" fill="#c81438ff" />
           Send Happy Thought
-          <Heart size={18} color="#ff4b6e" fill="#ff4b6e" />
+          <Heart size={18} color="#c81438ff" fill="#c81438ff" />
         </SubmitButton>
       </Form>
     </FormCard>
   );
 };
+
+
