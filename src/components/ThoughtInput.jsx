@@ -1,4 +1,3 @@
-// src/components/ThoughtInput.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Heart } from "lucide-react";
