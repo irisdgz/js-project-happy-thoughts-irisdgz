@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { PageHeader } from "./components/PageHeader";
 import { ThoughtInput } from "./components/ThoughtInput";
 import { ThoughtCard } from "./components/ThoughtCard";
-// Import the new components and constants
 import SignupForm from "./components/SignupForm";
 import LoginForm from "./components/LoginForm";
 import { API_BASE_URL } from "./constants";
@@ -28,18 +27,24 @@ const ThoughtsList = styled.section`
 
 export const App = () => {
   const [thoughts, setThoughts] = useState([]);
-  // 1. Add user state (replaces just accessToken to store email too)
   const [user, setUser] = useState(null);
 
+  // ✅ Only check localStorage on mount (no fetch here)
   useEffect(() => {
-    fetchThoughts();
-    
-    // 2. Check localStorage on mount (matches live session logic)
     const userFromStorage = localStorage.getItem("user");
     if (userFromStorage) {
       setUser(JSON.parse(userFromStorage));
     }
   }, []);
+
+  // ✅ Fetch thoughts only when user exists
+  useEffect(() => {
+    if (user) {
+      fetchThoughts();
+    } else {
+      setThoughts([]); // optional: clears thoughts on logout
+    }
+  }, [user]);
 
   const fetchThoughts = () => {
     fetch(API)
@@ -52,13 +57,11 @@ export const App = () => {
       .catch((error) => console.log("Could not load thoughts:", error));
   };
 
-  // 3. Add handleLogin matching the live session
   const handleLogin = (userData) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
   };
 
-  // 4. Add handleLogout matching the live session
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -67,10 +70,9 @@ export const App = () => {
   const addThought = (text) => {
     fetch(API, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        // 5. Pass the token from the user object
-        "Authorization": user?.accessToken 
+        Authorization: user?.accessToken,
       },
       body: JSON.stringify({ message: text }),
     })
@@ -102,11 +104,18 @@ export const App = () => {
     <Page>
       <PageHeader />
       <Main>
-        {/* 6. Conditional Rendering for Auth matching live session */}
         <div className="auth-container" style={{ marginBottom: "20px" }}>
           {user ? (
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <p>Welcome, <strong>{user.email}</strong>!</p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <p>
+                Welcome, <strong>{user.email}</strong>!
+              </p>
               <button onClick={handleLogout}>Logout</button>
             </div>
           ) : (
@@ -117,18 +126,20 @@ export const App = () => {
           )}
         </div>
 
-        {/* 7. Only show input if user is logged in */}
+        {/* ✅ Only show input + list if logged in */}
         {user && <ThoughtInput onAddMessage={addThought} />}
-        
-        <ThoughtsList>
-          {thoughts.map((item) => (
-            <ThoughtCard
-              key={item._id}
-              entry={item}
-              onLikeMessage={likeThought}
-            />
-          ))}
-        </ThoughtsList>
+
+        {user && (
+          <ThoughtsList>
+            {thoughts.map((item) => (
+              <ThoughtCard
+                key={item._id}
+                entry={item}
+                onLikeMessage={likeThought}
+              />
+            ))}
+          </ThoughtsList>
+        )}
       </Main>
     </Page>
   );
