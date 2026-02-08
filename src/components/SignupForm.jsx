@@ -25,7 +25,7 @@ const SignupForm = ({ handleLogin }) => {
         },
       });
 
-      // Handle network errors (500 series)
+      // Handle network errors
       if (!response.ok && response.status > 499) {
         throw new Error("Failed to create user");
       }
@@ -40,7 +40,7 @@ const SignupForm = ({ handleLogin }) => {
       // Success! Pass the user data up to App.jsx
       handleLogin(resJson.response);
 
-      // Reset form fields
+      // Reset the form fields
       setFormData({ email: "", password: "" });
     } catch (error) {
       setError(error.message);

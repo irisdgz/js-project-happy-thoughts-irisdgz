@@ -29,7 +29,7 @@ export const App = () => {
   const [thoughts, setThoughts] = useState([]);
   const [user, setUser] = useState(null);
 
-  // ✅ Only check localStorage on mount (no fetch here)
+  // Only check localStorage on mount (no fetch here)
   useEffect(() => {
     const userFromStorage = localStorage.getItem("user");
     if (userFromStorage) {
@@ -42,7 +42,7 @@ export const App = () => {
     if (user) {
       fetchThoughts();
     } else {
-      setThoughts([]); // optional: clears thoughts on logout
+      setThoughts([]); // this is optional: it clears thoughts on logout
     }
   }, [user]);
 

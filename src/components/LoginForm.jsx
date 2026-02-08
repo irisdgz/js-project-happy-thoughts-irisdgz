@@ -40,7 +40,7 @@ const LoginForm = ({ handleLogin }) => {
 
       const data = await response.json();
       
-      // Check for the success property if your backend sends it
+      // Check for the success property if my backend sends it
       if (data.success) {
         handleLogin(data.response);
       } else {
