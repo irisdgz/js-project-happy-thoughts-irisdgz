@@ -12,7 +12,7 @@ const SignupForm = ({ handleLogin }) => {
     e.preventDefault();
 
     try {
-      // 1. Updated endpoint to match the /users prefix in your backend
+      // 1. Updated endpoint to match the /users prefix in my backend
       const response = await fetch(`${API_BASE_URL}/users/signup`, {
         method: "POST",
         // 2. Manually pulling out email and password for the body

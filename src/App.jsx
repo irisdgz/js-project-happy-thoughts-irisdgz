@@ -37,7 +37,7 @@ export const App = () => {
     }
   }, []);
 
-  // ✅ Fetch thoughts only when user exists
+  //  Fetch thoughts only when user exists
   useEffect(() => {
     if (user) {
       fetchThoughts();
@@ -126,7 +126,7 @@ export const App = () => {
           )}
         </div>
 
-        {/* ✅ Only show input + list if logged in */}
+        {/*  Only show input + list if logged in */}
         {user && <ThoughtInput onAddMessage={addThought} />}
 
         {user && (
