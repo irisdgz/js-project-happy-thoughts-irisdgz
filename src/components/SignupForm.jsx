@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { API_BASE_URL } from "../constants";
 
-const Card = styled.div`
+const Card = styled.form`
   background: #fff;
   border: 2px solid #000;
   padding: 24px;
