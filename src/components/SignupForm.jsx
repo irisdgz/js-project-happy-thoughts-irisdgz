@@ -100,7 +100,7 @@ const SignupForm = ({ handleLogin }) => {
   };
 
   return (
-    <Card>
+    <Card onSubmit={handleSubmit}>
       <Title>Sign up</Title>
       <FieldRow>
         <Label>
