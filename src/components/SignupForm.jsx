@@ -1,46 +1,92 @@
 import { useState } from "react";
+import styled from "styled-components";
 import { API_BASE_URL } from "../constants";
+
+const Card = styled.div`
+  background: #fff;
+  border: 2px solid #000;
+  padding: 24px;
+  box-shadow: 6px 6px 0 #000;
+`;
+
+const Title = styled.h2`
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 16px;
+`;
+
+const FieldRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+`;
+
+const Label = styled.label`
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const Input = styled.input`
+  padding: 10px 12px;
+  border: 2px solid #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  outline: none;
+  &:focus {
+    background: #fffbe6;
+  }
+`;
+
+const Button = styled.button`
+  background: #000;
+  color: #fff;
+  border: 2px solid #000;
+  padding: 10px 24px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    background: #333;
+  }
+`;
+
+const ErrorText = styled.p`
+  color: #c81438;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  margin: 8px 0 0;
+`;
 
 const SignupForm = ({ handleLogin }) => {
   const [error, setError] = useState("");
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      // 1. Updated endpoint to match the /users prefix in my backend
       const response = await fetch(`${API_BASE_URL}/users/signup`, {
         method: "POST",
-        // 2. Manually pulling out email and password for the body
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
         }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-
-      // Handle network errors
-      if (!response.ok && response.status > 499) {
-        throw new Error("Failed to create user");
-      }
 
       const resJson = await response.json();
 
-      // Handle application-level errors (e.g., user already exists)
       if (!resJson.success) {
         throw new Error(resJson.message || "Failed to create user");
       }
 
-      // Success! Pass the user data up to App.jsx
       handleLogin(resJson.response);
-
-      // Reset the form fields
       setFormData({ email: "", password: "" });
     } catch (error) {
       setError(error.message);
@@ -50,39 +96,35 @@ const SignupForm = ({ handleLogin }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Updating state using the previous state pattern from the live session
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   return (
-    <form className="signup-form" onSubmit={handleSubmit}>
-      <h2>Sign up</h2>
-
-      <div className="login-inputs">
-        <label>
+    <Card>
+      <Title>Sign up</Title>
+      <FieldRow>
+        <Label>
           Email
-          <input
+          <Input
             onChange={handleChange}
             type="email"
             name="email"
             value={formData.email}
           />
-        </label>
-
-        <label>
+        </Label>
+        <Label>
           Password
-          <input
+          <Input
             onChange={handleChange}
             type="password"
             name="password"
             value={formData.password}
           />
-        </label>
-      </div>
-
-      <button type="submit">Sign up</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </form>
+        </Label>
+      </FieldRow>
+      <Button type="submit">Sign up</Button>
+      {error && <ErrorText>{error}</ErrorText>}
+    </Card>
   );
 };
 

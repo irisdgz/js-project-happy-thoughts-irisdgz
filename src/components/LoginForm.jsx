@@ -1,18 +1,76 @@
 import { useState } from "react";
+import styled from "styled-components";
 import { API_BASE_URL } from "../constants";
 
-const LoginForm = ({ handleLogin }) => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+const Card = styled.div`
+  background: #fff;
+  border: 2px solid #000;
+  padding: 24px;
+  box-shadow: 6px 6px 0 #000;
+`;
 
+const Title = styled.h2`
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 16px;
+`;
+
+const FieldRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+`;
+
+const Label = styled.label`
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const Input = styled.input`
+  padding: 10px 12px;
+  border: 2px solid #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  outline: none;
+  &:focus {
+    background: #fffbe6;
+  }
+`;
+
+const Button = styled.button`
+  background: #000;
+  color: #fff;
+  border: 2px solid #000;
+  padding: 10px 24px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    background: #333;
+  }
+`;
+
+const ErrorText = styled.p`
+  color: #c81438;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  margin: 8px 0 0;
+`;
+
+const LoginForm = ({ handleLogin }) => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
     if (!formData.email || !formData.password) {
       setError("Please fill in both fields");
       return;
@@ -21,33 +79,29 @@ const LoginForm = ({ handleLogin }) => {
     setError("");
 
     try {
-      // 1. Updated endpoint to include /users/
       const response = await fetch(`${API_BASE_URL}/users/login`, {
         method: "POST",
-        // 2. Manually pulling out email and password for the body
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
         }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const data = await response.json();
+        throw new Error(data.message || "Invalid email or password");
       }
 
       const data = await response.json();
-      
-      // Check for the success property if my backend sends it
+
       if (data.success) {
         handleLogin(data.response);
       } else {
         setError(data.message || "Invalid email or password");
       }
     } catch (error) {
-      setError("Invalid email or password");
+      setError(error.message || "Something went wrong. Please try again.");
       console.log("Error during login:", error);
     }
   };
@@ -58,34 +112,31 @@ const LoginForm = ({ handleLogin }) => {
   };
 
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
-      <h2>Log in</h2>
-
-      <div className="login-inputs">
-        <label>
+    <Card>
+      <Title>Log in</Title>
+      <FieldRow>
+        <Label>
           Email
-          <input
+          <Input
             onChange={handleChange}
             type="email"
             name="email"
             value={formData.email}
           />
-        </label>
-        <label>
+        </Label>
+        <Label>
           Password
-          <input
+          <Input
             onChange={handleChange}
             type="password"
             name="password"
             value={formData.password}
           />
-        </label>
-      </div>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <button type="submit">Log In</button>
-    </form>
+        </Label>
+      </FieldRow>
+      {error && <ErrorText>{error}</ErrorText>}
+      <Button type="submit">Log in</Button>
+    </Card>
   );
 };
 
