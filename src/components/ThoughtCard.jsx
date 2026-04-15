@@ -109,6 +109,10 @@ export const ThoughtCard = ({ entry, onLikeMessage, onEditMessage, onDeleteMessa
   // Only show edit/delete if this thought belongs to the logged in user
   const isOwner = currentUserId && entry.user && entry.user.toString() === currentUserId.toString();
 
+  console.log("entry.user:", entry.user);
+  console.log("currentUserId:", currentUserId);
+  console.log("isOwner:", isOwner);
+
   const handleSaveEdit = () => {
     const trimmed = editText.trim();
     if (trimmed.length < 5) { setEditError("Too short (min 5 chars)."); return; }
