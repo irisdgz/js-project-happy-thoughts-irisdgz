@@ -60,8 +60,8 @@ export const ThoughtInput = ({ onAddMessage }) => {
   const [newMessage, setNewMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Runs when the user submits the form
-  const handleSubmit = (event) => {
+  
+  const handleSubmit = (event) => {  
     event.preventDefault();
 
     // easy length checks based on the API rules 5-140 letters

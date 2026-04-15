@@ -29,7 +29,6 @@ export const App = () => {
   const [thoughts, setThoughts] = useState([]);
   const [user, setUser] = useState(null);
 
-  // Only check localStorage on mount (no fetch here)
   useEffect(() => {
     const userFromStorage = localStorage.getItem("user");
     if (userFromStorage) {
@@ -100,6 +99,44 @@ export const App = () => {
       .catch((error) => console.log("Could not like thought:", error));
   };
 
+  // Edit a thought
+  const editThought = (id, newText) => {
+    fetch(`${API}/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: user?.accessToken,
+      },
+      body: JSON.stringify({ message: newText }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          setThoughts((prevThoughts) =>
+            prevThoughts.map((item) => (item._id === id ? json.response : item))
+          );
+        }
+      })
+      .catch((error) => console.log("Could not edit thought:", error));
+  };
+
+  // Delete a thought
+  const deleteThought = (id) => {
+    fetch(`${API}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: user?.accessToken,
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          setThoughts((prevThoughts) => prevThoughts.filter((item) => item._id !== id));
+        }
+      })
+      .catch((error) => console.log("Could not delete thought:", error));
+  };
+
   return (
     <Page>
       <PageHeader />
@@ -126,7 +163,6 @@ export const App = () => {
           )}
         </div>
 
-        {/* Only show input + list if logged in */}
         {user && <ThoughtInput onAddMessage={addThought} />}
 
         {user && (
@@ -136,6 +172,8 @@ export const App = () => {
                 key={item._id}
                 entry={item}
                 onLikeMessage={likeThought}
+                onEditMessage={editThought}   
+                onDeleteMessage={deleteThought} 
               />
             ))}
           </ThoughtsList>

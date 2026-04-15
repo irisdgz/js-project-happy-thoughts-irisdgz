@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Heart } from "lucide-react";
+import { Heart, Pencil, Trash2, Check, X } from "lucide-react";
 
 const Card = styled.article`
   background: #ffffff;
@@ -15,9 +15,27 @@ const Message = styled.p`
   font-size: 16px;
   margin: 0 0 16px;
   white-space: pre-wrap;
-  word-break: break-word;  
+  word-break: break-word;
 `;
-//If a word is super long and doesn’t fit, break it so it fits.
+
+const EditArea = styled.textarea`
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  border: 2px solid #000;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  resize: none;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+`;
+
+const ErrorText = styled.p`
+  color: #9e0b2b;
+  font-size: 12px;
+  margin: 0 0 8px;
+  font-family: "Montserrat", sans-serif;
+`;
 
 const FooterRow = styled.div`
   display: flex;
@@ -46,7 +64,25 @@ const LikeButton = styled.button`
 const LikeCount = styled.span`
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
-  color: #464545ff;
+  color: #464545;
+`;
+
+const RightGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const IconButton = styled.button`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background-color: #f3f3f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 
 const TimeAgo = styled.span`
@@ -55,31 +91,79 @@ const TimeAgo = styled.span`
   color: #999;
 `;
 
-//helper funciton to show how many min ago can also use the moment.js
 const getTimeAgo = (date) => {
   const diff = Date.now() - new Date(date).getTime();
   const minutes = Math.floor(diff / 60000);
-
   if (minutes === 0) return "just now";
-  return `${minutes} min ago`;
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
 };
 
-export const ThoughtCard = ({ entry, onLikeMessage }) => {
-  const timeAgo = getTimeAgo(entry.createdAt);
+export const ThoughtCard = ({ entry, onLikeMessage, onEditMessage, onDeleteMessage }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(entry.message);
+  const [editError, setEditError] = useState("");
+
+  const handleSaveEdit = () => {
+    const trimmed = editText.trim();
+    if (trimmed.length < 5) { setEditError("Too short (min 5 chars)."); return; }
+    if (trimmed.length > 140) { setEditError("Too long (max 140 chars)."); return; }
+    onEditMessage(entry._id, trimmed);
+    setIsEditing(false);
+    setEditError("");
+  };
+
+  const handleCancelEdit = () => {
+    setEditText(entry.message);
+    setIsEditing(false);
+    setEditError("");
+  };
 
   return (
     <Card>
-      <Message>{entry.message}</Message>
+      {isEditing ? (
+        <>
+          <EditArea value={editText} onChange={(e) => setEditText(e.target.value)} />
+          {editError && <ErrorText>{editError}</ErrorText>}
+        </>
+      ) : (
+        <Message>{entry.message}</Message>
+      )}
 
       <FooterRow>
         <LikeGroup>
           <LikeButton onClick={() => onLikeMessage(entry._id)}>
-            <Heart size={18} color="#c81438ff" fill="#c81438ff" />
+            <Heart size={18} color="#c81438" fill="#c81438" />
           </LikeButton>
           <LikeCount>x {entry.hearts}</LikeCount>
         </LikeGroup>
 
-        <TimeAgo>{timeAgo}</TimeAgo>
+        <RightGroup>
+          {isEditing ? (
+            <>
+              <IconButton onClick={handleSaveEdit} title="Save">
+                <Check size={16} color="#2a7a2a" />
+              </IconButton>
+              <IconButton onClick={handleCancelEdit} title="Cancel">
+                <X size={16} color="#999" />
+              </IconButton>
+            </>
+          ) : (
+            onEditMessage && onDeleteMessage && (
+              <>
+                <IconButton onClick={() => setIsEditing(true)} title="Edit">
+                  <Pencil size={16} color="#555" />
+                </IconButton>
+                <IconButton onClick={() => onDeleteMessage(entry._id)} title="Delete">
+                  <Trash2 size={16} color="#c81438" />
+                </IconButton>
+              </>
+            )
+          )}
+          <TimeAgo>{getTimeAgo(entry.createdAt)}</TimeAgo>
+        </RightGroup>
       </FooterRow>
     </Card>
   );
