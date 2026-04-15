@@ -174,7 +174,7 @@ export const App = () => {
                 onLikeMessage={likeThought}
                 onEditMessage={editThought}
                 onDeleteMessage={deleteThought}
-                currentUserId={user?._id}
+                currentUserId={user?.id}
               />
             ))}
           </ThoughtsList>
