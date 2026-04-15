@@ -101,10 +101,13 @@ const getTimeAgo = (date) => {
   return `${Math.floor(hours / 24)}d ago`;
 };
 
-export const ThoughtCard = ({ entry, onLikeMessage, onEditMessage, onDeleteMessage }) => {
+export const ThoughtCard = ({ entry, onLikeMessage, onEditMessage, onDeleteMessage, currentUserId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(entry.message);
   const [editError, setEditError] = useState("");
+
+  // Only show edit/delete if this thought belongs to the logged in user
+  const isOwner = currentUserId && entry.user && entry.user.toString() === currentUserId.toString();
 
   const handleSaveEdit = () => {
     const trimmed = editText.trim();
@@ -151,7 +154,7 @@ export const ThoughtCard = ({ entry, onLikeMessage, onEditMessage, onDeleteMessa
               </IconButton>
             </>
           ) : (
-            onEditMessage && onDeleteMessage && (
+            isOwner && (
               <>
                 <IconButton onClick={() => setIsEditing(true)} title="Edit">
                   <Pencil size={16} color="#555" />
